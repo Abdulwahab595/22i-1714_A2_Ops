@@ -1,0 +1,4 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-remote
