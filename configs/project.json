@@ -1,0 +1,13 @@
+{
+  "project_name": "22i-1714_A2_Ops",
+  "student": "Abdul Wahab",
+  "roll_number": "22i-1714",
+  "dataset": "cashbowman/ai-generated-images-vs-real-images",
+  "seed": 42,
+  "image_size": 128,
+  "batch_size": 32,
+  "train_fraction": 0.7,
+  "validation_fraction": 0.15,
+  "real_false_positive_cost": 2.0,
+  "ai_false_negative_cost": 1.0
+}
