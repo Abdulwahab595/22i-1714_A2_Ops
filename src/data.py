@@ -34,6 +34,8 @@ def preprocess_bytes(content, image_size=128):
 def _read_rgb(path):
     if hasattr(path, "numpy"):
         path = path.numpy()
+    if isinstance(path, np.ndarray):
+        path = path.item()
     if isinstance(path, bytes):
         path = path.decode("utf-8")
     return decode_rgb(Path(path).read_bytes())
