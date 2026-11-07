@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Prediction history{% endblock %}
+{% block content %}
+<div class="page-intro"><p class="eyebrow">THE PREDICTION TRAIL</p><h1>Every analysis has a record.</h1><p>Recent predictions and rejected uploads. Image contents are never stored.</p></div>
+<section class="history-card">
+{% if predictions %}<div class="table-scroll"><table><thead><tr><th>Time (UTC)</th><th>File</th><th>Verdict / status</th><th>Confidence</th><th>Model version</th></tr></thead><tbody>
+{% for item in predictions %}<tr><td>{{ item.created_at[:19].replace('T', ' ') }}</td><td>{% if item.status == 'success' %}<a href="{{ url_for('result_page', identifier=item.id) }}">{{ item.filename }}</a>{% else %}{{ item.filename or 'Upload' }}{% endif %}</td><td><span class="status {{ item.status }}">{{ labels.get(item.label, item.status|title) }}</span>{% if item.error %}<small class="error-note">{{ item.error }}</small>{% endif %}</td><td>{{ '%.1f%%'|format(item.confidence * 100) if item.confidence is not none else '—' }}</td><td>{{ item.model_version or '—' }}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<div class="empty-state"><h2>No analyses yet.</h2><p>Your first image analysis will appear here.</p><a class="button" href="{{ url_for('index') }}">Analyze an image</a></div>{% endif %}
+</section>
+{% endblock %}

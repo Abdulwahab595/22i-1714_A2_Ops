@@ -1,0 +1,49 @@
+name: ${COMPOSE_PROJECT_NAME:-22i-1714_a2_ops}
+services:
+  web:
+    labels:
+      assignment.project: 22i-1714_A2_Ops
+    build: .
+    image: 22i-1714_a2_ops:web
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      APP_MODE: local
+      HOST: 0.0.0.0
+      PORT: "8000"
+      MODEL_PATH: /app/models/champion.keras
+      MODEL_METADATA_PATH: /app/models/champion.json
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-visionguard}
+      API_KEY: ${API_KEY:-}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
+      DECISION_THRESHOLD: ${DECISION_THRESHOLD:-}
+    volumes:
+      - ./models:/app/models:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=8)"]
+      interval: 20s
+      timeout: 10s
+      start_period: 90s
+      retries: 3
+  db:
+    labels:
+      assignment.project: 22i-1714_A2_Ops
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-visionguard}
+      POSTGRES_USER: ${POSTGRES_USER:-visionguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - prediction_history:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+volumes:
+  prediction_history:

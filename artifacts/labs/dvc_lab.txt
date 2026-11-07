@@ -1,0 +1,170 @@
+22i-1714_A2_Ops | Abdul Wahab | 2026-11-07T23:31:01.620035+00:00
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git init -b main
+Initialized empty Git repository in C:/Users/abdul/Documents/Codex/2026-11-08/visionguard-assignment-ai-vs-real-image-2/work/labs/dvc-toy-complete/.git/
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git config user.name Abdul Wahab
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git config user.email 117485903+Abdulwahab595@users.noreply.github.com
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc init
+Initialized DVC repository.
+
+You can now commit the changes to git.
+
+What's next?
+------------
+- Check out the documentation: <https://dvc.org/doc>
+- Get help and share ideas: <https://dvc.org/chat>
+- Star us on GitHub: <https://github.com/treeverse/dvc>
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc remote add -d storage C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-remote
+Setting 'storage' as a default remote.
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc add images.csv
+
+To track the changes with git, run:
+
+	git add .gitignore images.csv.dvc
+
+To enable auto staging, run:
+
+	dvc config core.autostage true
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git add .
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git commit -m Toy data version 1
+[main (root-commit) 110e4e8] Toy data version 1
+ 5 files changed, 16 insertions(+)
+ create mode 100644 .dvc/.gitignore
+ create mode 100644 .dvc/config
+ create mode 100644 .dvcignore
+ create mode 100644 .gitignore
+ create mode 100644 images.csv.dvc
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git rev-parse HEAD
+110e4e807c81c79b1a5fbc91ed5a8921aeeeab18
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc push
+1 file pushed
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc add images.csv
+
+To track the changes with git, run:
+
+	git add images.csv.dvc
+
+To enable auto staging, run:
+
+	dvc config core.autostage true
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git add .
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git commit -m Toy data version 2
+[main 7d943d0] Toy data version 2
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git rev-parse HEAD
+7d943d071828d7da50b752804682f8ad811e071d
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc push
+1 file pushed
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git log --oneline
+7d943d0 Toy data version 2
+110e4e8 Toy data version 1
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git checkout 110e4e807c81c79b1a5fbc91ed5a8921aeeeab18
+Note: switching to '110e4e807c81c79b1a5fbc91ed5a8921aeeeab18'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 110e4e8 Toy data version 1
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc checkout
+M       images.csv
+
+Verified version 1 content after rollback:
+image,label
+example_1.jpg,real
+example_2.jpg,ai_generated
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> git checkout main
+Previous HEAD position was 110e4e8 Toy data version 1
+Switched to branch 'main'
+
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc checkout
+M       images.csv
+
+Deleted the toy working CSV only; restoring with dvc pull.
+
+abdul@22i-1714_A2_Ops C:\Users\abdul\Documents\Codex\2026-11-08\visionguard-assignment-ai-vs-real-image-2\work\labs\dvc-toy-complete
+> C:\Users\abdul\Documents\Codex\work\vg310\Scripts\python.exe -m dvc pull
+A       images.csv
+1 file added
+
+Verified version 2 restored:
+image,label
+example_1.jpg,real
+example_2.jpg,ai_generated
+example_3.jpg,real
+
+Pointer file:
+outs:
+- md5: 569b4dbcf151b87a4a7342bc7e2c76b9
+  size: 81
+  hash: md5
+  path: images.csv
+

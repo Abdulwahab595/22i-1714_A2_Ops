@@ -1,0 +1,28 @@
+# Free cloud container + external managed PostgreSQL. Supply secrets in Render's dashboard.
+services:
+  - type: web
+    name: 22i-1714-a2-ops
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PROJECT_NAME
+        value: 22i-1714_A2_Ops
+      - key: APP_MODE
+        value: local
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: '10000'
+      - key: DATABASE_URL
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: MLFLOW_TRACKING_URI
+        sync: false
+      - key: MLFLOW_TRACKING_USERNAME
+        sync: false
+      - key: MLFLOW_TRACKING_PASSWORD
+        sync: false
+      - key: CHAMPION_RUN_ID
+        sync: false

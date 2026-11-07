@@ -10,3 +10,4 @@ gunicorn==23.0.0; sys_platform != 'win32'
 tensorflow-cpu==2.19.0; sys_platform != 'win32'
 tensorflow==2.19.0; sys_platform == 'win32'
 keras==3.10.0
+mlflow-skinny==2.22.1

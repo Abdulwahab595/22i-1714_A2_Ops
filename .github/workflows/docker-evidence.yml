@@ -1,0 +1,31 @@
+name: Docker lab and Compose verification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  docker-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      MLFLOW_TRACKING_URI: ${{ secrets.DAGSHUB_TRACKING_URI }}
+      MLFLOW_TRACKING_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
+      MLFLOW_TRACKING_PASSWORD: ${{ secrets.DAGSHUB_TOKEN }}
+      CHAMPION_RUN_ID: ${{ vars.CHAMPION_RUN_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install mlflow-skinny==2.22.1 requests==2.32.5 python-dotenv==1.1.1
+      - name: Download pinned trained champion
+        run: python -m scripts.fetch_champion
+      - name: Create untracked local Compose settings
+        run: python -c "import secrets,pathlib; pathlib.Path('.env').write_text('POSTGRES_PASSWORD='+secrets.token_hex(16)+'\n')"
+      - name: Warm-up, build comparison, Compose, and failure recovery
+        run: python -m scripts.docker_lab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: docker-lab-evidence
+          path: artifacts/labs/docker/

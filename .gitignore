@@ -15,6 +15,10 @@ mlartifacts/
 .dvc/config.local
 data/raw/
 data/processed/
+data/*.zip
+data/*.part
+.keras-cache/
+local-dvc-remote/
 models/*.keras
 models/*.h5
 models/*.tflite

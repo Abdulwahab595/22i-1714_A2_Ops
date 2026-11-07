@@ -1,0 +1,26 @@
+[
+  {
+    "figure": "width_histogram.png",
+    "class_medians": {
+      "ai_generated": 1028.5,
+      "real": 920.0
+    },
+    "interpretation": "The median width is 920 for real and 1028 for AI-generated images. A size difference may become a shortcut for the classifier, so both classes use the same resizing policy; resize alone does not prove that source or compression bias has been removed."
+  },
+  {
+    "figure": "height_histogram.png",
+    "class_medians": {
+      "ai_generated": 800.0,
+      "real": 720.0
+    },
+    "interpretation": "The median height is 720 for real and 800 for AI-generated images. A size difference may become a shortcut for the classifier, so both classes use the same resizing policy; resize alone does not prove that source or compression bias has been removed."
+  },
+  {
+    "figure": "file_size_histogram.png",
+    "class_medians": {
+      "ai_generated": 199802.5,
+      "real": 144840.0
+    },
+    "interpretation": "The median file_size is 144840 for real and 199802 for AI-generated images. A size difference may become a shortcut for the classifier, so both classes use the same resizing policy; resize alone does not prove that source or compression bias has been removed."
+  }
+]

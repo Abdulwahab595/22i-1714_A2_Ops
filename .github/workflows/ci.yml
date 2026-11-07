@@ -1,0 +1,29 @@
+name: VisionGuard CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+      - name: Install serving and test dependencies
+        run: pip install -r requirements.txt pytest==8.4.2 ruff==0.12.12 scikit-learn==1.6.1 matplotlib==3.10.1 pandas==2.2.3
+      - name: Lint
+        run: ruff check app.py serve.py src scripts tests
+      - name: Test request validation, persistence, and split isolation
+        run: pytest -q
+  docker-build:
+    needs: lint-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the CPU image
+        run: docker build -t 22i-1714_a2_ops:ci .

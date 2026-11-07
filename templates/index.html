@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero"><p class="eyebrow">A CLOSER LOOK AT YOUR IMAGES</p><h1>Real moment.<br><span>Or generated image?</span></h1>
+  <p class="intro">Upload an image and let VisionGuard look for patterns associated with AI generation.</p></div>
+<section class="upload-card" aria-labelledby="upload-heading">
+  <div class="section-heading"><span class="step">01</span><div><h2 id="upload-heading">Analyze your image</h2><p>JPEG or PNG · Up to 5 MB</p></div></div>
+  {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+  <form method="post" enctype="multipart/form-data">
+    <label class="upload-zone" for="image"><span class="upload-symbol" aria-hidden="true">↑</span><strong>Choose an image</strong><span>Your image is processed in memory and is not saved.</span></label>
+    <input id="image" name="image" type="file" accept="image/jpeg,image/png" required>
+    <button type="submit">Analyze image <span aria-hidden="true">→</span></button>
+  </form>
+</section>
+<aside class="caveat"><strong>A useful signal, with limits.</strong><p>A prediction is not proof. Artwork, editing, compression, and unfamiliar AI generators can confuse the model. Use other evidence before judging an image's authenticity.</p></aside>
+{% endblock %}

@@ -1,0 +1,12 @@
+# Deliberately retain pip's cache for the required measured before/after comparison.
+# Use the same package versions and base so the comparison isolates one change.
+FROM python:3.10-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 HOST=0.0.0.0 PORT=8000
+WORKDIR /app
+COPY requirements.txt ./
+RUN pip install -r requirements.txt && useradd --create-home --uid 1000 appuser
+COPY --chown=appuser:appuser . .
+RUN mkdir -p artifacts models && chown -R appuser:appuser artifacts models
+USER appuser
+EXPOSE 8000
+CMD ["python", "serve.py"]

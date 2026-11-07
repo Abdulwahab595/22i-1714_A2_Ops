@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Analysis result{% endblock %}
+{% block content %}
+<div class="page-intro"><p class="eyebrow">ANALYSIS COMPLETE</p><h1>Your image, analyzed.</h1><p>{{ result.filename }}</p></div>
+<section class="result-card">
+  <span class="result-tag">MODEL VERDICT</span><h2 class="verdict">{{ labels.get(result.label, result.label) }}</h2>
+  <div class="confidence"><strong>{{ '%.1f'|format(result.confidence * 100) }}<small>%</small></strong><span>Confidence · uncalibrated model score</span></div>
+  <div class="score-track" role="img" aria-label="Model confidence {{ '%.1f'|format(result.confidence * 100) }} percent"><div style="width:{{ result.confidence * 100 }}%"></div></div>
+  <dl class="details"><div><dt>AI-generated score</dt><dd>{{ '%.4f'|format(result.ai_probability) }}</dd></div><div><dt>Decision threshold</dt><dd>{{ '%.4f'|format(result.threshold) }}</dd></div><div><dt>Model version</dt><dd>{{ result.model_version }}</dd></div><div><dt>Recorded at (UTC)</dt><dd>{{ result.created_at }}</dd></div></dl>
+  <p class="request-id">Prediction ID: {{ result.id }}</p>
+</section>
+<aside class="caveat"><strong>Interpret this result with care.</strong><p>{{ caveat }}</p></aside>
+<div class="actions"><a class="button" href="{{ url_for('index') }}">Analyze another image</a><a href="{{ url_for('history_page') }}">View prediction history →</a></div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{
+  "all_files": 975,
+  "readable_counts": {
+    "ai_generated": 539,
+    "real": 436
+  },
+  "unreadable_files": 0,
+  "unknown_class_files": 0,
+  "duplicate_groups": 1,
+  "duplicate_files_including_first": 2,
+  "redundant_readable_copies": 1,
+  "conflicting_hash_groups": 0,
+  "unique_usable_images": 974,
+  "formats": {
+    "JPEG": 832,
+    "PNG": 143
+  },
+  "modes": {
+    "RGB": 896,
+    "RGBA": 49,
+    "P": 23,
+    "L": 7
+  },
+  "seed": 42,
+  "split_counts": {
+    "train": {
+      "ai_generated": 376,
+      "real": 305
+    },
+    "validation": {
+      "ai_generated": 81,
+      "real": 65
+    },
+    "test": {
+      "ai_generated": 81,
+      "real": 66
+    }
+  },
+  "audit_sha256": "a839204070f45c9ac552ad04bcd25ec1c10be51e4e568fc6237fe5d3b0c0b736"
+}
