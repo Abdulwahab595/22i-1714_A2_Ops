@@ -76,6 +76,16 @@ def test_oversize_upload_is_friendly(configured):
     assert store.history()[0]["status"] == "rejected"
 
 
+@pytest.mark.parametrize("route", ["/", "/api/predict"])
+def test_oversize_multipart_reaches_global_413_handler(configured, route):
+    app, store, _ = configured
+    response = app.test_client().post(route, data={
+        "image": (io.BytesIO(b"x" * (app.config["MAX_CONTENT_LENGTH"] + 1)), "oversized.png")})
+    assert response.status_code == 413
+    assert b"too large" in response.data
+    assert store.history()[0]["status"] == "rejected"
+
+
 def test_model_is_reused_and_health_checks_database(tmp_path, monkeypatch):
     class CountingEngine(FixedEngine):
         constructions = 0

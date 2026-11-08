@@ -11,6 +11,8 @@ import os
 import subprocess
 import sys
 import time
+import zipfile
+import io
 from pathlib import Path
 
 import requests
@@ -26,6 +28,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--toy-only", action="store_true")
     parser.add_argument("--secrets-only", action="store_true")
+    parser.add_argument("--collect-only", action="store_true")
+    parser.add_argument("--verify-url", help="Run external API and final Docker checks, then collect evidence")
     args = parser.parse_args()
     load_dotenv()
     env = os.environ.copy()
@@ -86,6 +90,72 @@ def main():
             print(f"Waiting for {repo}: expected {expected} ...", flush=True)
             time.sleep(10)
         raise TimeoutError("GitHub Actions did not finish within 15 minutes")
+
+    def collect_run(run):
+        if not run:
+            return
+        identifier = run["id"]
+        summary = {key: run.get(key) for key in
+                   ["id", "name", "head_sha", "status", "conclusion", "html_url", "created_at"]}
+        (records / f"github_run_{identifier}.json").write_text(json.dumps(summary, indent=2))
+        listing = api("GET", f"/repos/{OWNER}/{PROJECT}/actions/runs/{identifier}/artifacts")
+        for artifact in listing.get("artifacts", []):
+            if artifact["expired"]:
+                continue
+            response = session.get(artifact["archive_download_url"], timeout=90)
+            response.raise_for_status()
+            destination = Path("artifacts/github") / str(identifier)
+            destination.mkdir(parents=True, exist_ok=True)
+            with zipfile.ZipFile(io.BytesIO(response.content)) as archive:
+                for member in archive.infolist():
+                    target = (destination / member.filename).resolve()
+                    if not target.is_relative_to(destination.resolve()):
+                        raise ValueError("Artifact archive contains an unsafe path")
+                    if not member.is_dir():
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        target.write_bytes(archive.read(member))
+            for source in destination.rglob("*"):
+                if not source.is_file():
+                    continue
+                if artifact["name"] == "docker-lab-evidence":
+                    target = records / "docker" / source.name
+                elif source.name == "external-network-results.json":
+                    target = Path("artifacts/external-network-results.json")
+                else:
+                    continue
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(source.read_bytes())
+        print(f"Collected verified run evidence: {run['html_url']}", flush=True)
+
+    if args.collect_only or args.verify_url:
+        workflows = ["docker-evidence.yml", "external-api-test.yml"]
+        for workflow in workflows:
+            path = f"/repos/{OWNER}/{PROJECT}/actions/workflows/{workflow}/runs?per_page=10"
+            before = api("GET", path).get("workflow_runs", [])
+            if args.verify_url:
+                body = {"ref": "main"}
+                if workflow == "external-api-test.yml":
+                    body["inputs"] = {"api_url": args.verify_url.rstrip("/")}
+                api("POST", f"/repos/{OWNER}/{PROJECT}/actions/workflows/{workflow}/dispatches", body)
+                old_ids = {run["id"] for run in before}
+                deadline = time.monotonic() + 1500
+                while time.monotonic() < deadline:
+                    found = api("GET", path).get("workflow_runs", [])
+                    new = [run for run in found if run["id"] not in old_ids]
+                    if new and new[0]["status"] == "completed":
+                        collect_run(new[0])
+                        if new[0]["conclusion"] != "success":
+                            raise RuntimeError("Verification failed: " + new[0]["html_url"])
+                        break
+                    print(f"Waiting for {workflow} ...", flush=True)
+                    time.sleep(15)
+                else:
+                    raise TimeoutError("Verification is still running; use --collect-only later")
+            else:
+                successful = [run for run in before if run["conclusion"] == "success"]
+                collect_run(successful[0] if successful else None)
+        print("Evidence collected without displaying credentials.", flush=True)
+        return
 
     if not args.secrets_only:
         toy_evidence = records / "toy_ci_runs.json"

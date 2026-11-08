@@ -171,6 +171,8 @@ def create_app(config=None, engine=None, store=None):
                 return redirect(url_for("result_page", identifier=result["id"]))
             except UploadError as error:
                 return render_template("index.html", error=str(error)), error.status
+            except RequestEntityTooLarge:
+                raise
             except Exception:
                 app.logger.exception("Prediction request could not be completed")
                 return render_template("error.html", title="Service unavailable",
@@ -209,6 +211,8 @@ def create_app(config=None, engine=None, store=None):
             return jsonify(analyze())
         except UploadError as error:
             return jsonify(error=str(error)), error.status
+        except RequestEntityTooLarge:
+            raise
         except Exception:
             app.logger.exception("Prediction could not be committed to the database")
             return jsonify(error="The service could not complete and save the prediction."), 503
