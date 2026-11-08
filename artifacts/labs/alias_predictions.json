@@ -1,0 +1,16 @@
+[
+  {
+    "model_uri": "models:/22i-1714_A2_Ops@champion",
+    "version": "2",
+    "ai_probability": 0.40176862478256226,
+    "threshold": 0.5626477003097534,
+    "label": "real"
+  },
+  {
+    "model_uri": "models:/22i-1714_A2_Ops@champion",
+    "version": "2",
+    "ai_probability": 0.645759642124176,
+    "threshold": 0.5626477003097534,
+    "label": "ai_generated"
+  }
+]

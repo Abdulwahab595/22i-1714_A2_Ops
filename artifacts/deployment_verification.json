@@ -1,0 +1,62 @@
+{
+  "project": "22i-1714_A2_Ops",
+  "time_utc": "2026-11-08T11:19:01.861786+00:00",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "api_base_url": "https://two2i-1714-a2-ops.onrender.com",
+  "execution_environment": "local client",
+  "requests": [
+    {
+      "file": "real.jpg",
+      "http_status": 200,
+      "response": {
+        "ai_probability": 0.4017674922943115,
+        "caveat": "This is an experimental model score, not proof of authenticity. Edited photos, artwork, compression, and unfamiliar generators can cause errors. The score has not been calibrated as a probability of correctness.",
+        "confidence": 0.5982325077056885,
+        "created_at": "2026-11-08T11:19:04.867374+00:00",
+        "duration_ms": 1817.208293825388,
+        "error": null,
+        "filename": "real.jpg",
+        "id": "78f869b2-9f42-46a3-9963-592268906fbe",
+        "image_sha256": "c980d6352ce5ce2aabee678eaa1b34cedb596040abce2829d9c715ed0ad9504c",
+        "label": "real",
+        "model_name": "22i-1714_A2_Ops",
+        "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93",
+        "model_version": "2",
+        "status": "success",
+        "threshold": 0.5626477003097534
+      }
+    },
+    {
+      "file": "ai_generated.jpg",
+      "http_status": 200,
+      "response": {
+        "ai_probability": 0.6457565426826477,
+        "caveat": "This is an experimental model score, not proof of authenticity. Edited photos, artwork, compression, and unfamiliar generators can cause errors. The score has not been calibrated as a probability of correctness.",
+        "confidence": 0.6457565426826477,
+        "created_at": "2026-11-08T11:19:06.851034+00:00",
+        "duration_ms": 1291.5262561291456,
+        "error": null,
+        "filename": "ai_generated.jpg",
+        "id": "8545e51b-babe-4262-a6c8-ba5bff6d1eb7",
+        "image_sha256": "d2b202673f34f7b9a7ec3bb9de664d1f39548219a98683b53505ecddc6022725",
+        "label": "ai_generated",
+        "model_name": "22i-1714_A2_Ops",
+        "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93",
+        "model_version": "2",
+        "status": "success",
+        "threshold": 0.5626477003097534
+      }
+    }
+  ],
+  "health": {
+    "database": "connected",
+    "mode": "local",
+    "model": "loaded",
+    "model_loads": 1,
+    "model_version": "2",
+    "project": "22i-1714_A2_Ops",
+    "status": "healthy"
+  },
+  "history_verified": true,
+  "status": "passed"
+}

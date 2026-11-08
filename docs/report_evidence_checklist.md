@@ -1,7 +1,11 @@
 # Submission evidence checklist
 
 Only mark an item complete after the actual action and its evidence have been verified.
-This checklist is preparation material, not a claim that deployment is already complete.
+Final verification: deployment, Docker/Compose, external-network requests, local-to-cloud integration,
+Postman/Newman (7 requests, 10 assertions), Ruff and all 19 tests passed on 8 November 2026.
+See the JSON records under `artifacts/` and the captioned screenshots under `docs/evidence/`.
+The PDF discloses the late backbone correction, original tested release selection, archived-record
+screenshots, read-only tracking viewer and DagsHub code-listing inconsistency.
 
 | Task | Evidence to include in the PDF |
 |---|---|
@@ -44,3 +48,6 @@ Current genuine troubleshooting to explain: Windows wheel path length, DVC site-
 Windows text encoding for model summaries, and MLflow's immutable batch_size parameter conflict.
 Recovered Keras history is explicitly tagged with recovery timestamps; the corrected autologging
 run is a separate real training run logged directly to DagsHub.
+Additional resolved issues: augmentation-container selection during fine-tuning, a setup-python
+runner failure, native psycopg startup crash on Render (replaced with pg8000), and multipart 413
+being intercepted by a broad exception handler. Optional Grad-CAM was omitted.

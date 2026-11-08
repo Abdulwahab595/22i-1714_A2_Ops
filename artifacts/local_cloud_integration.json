@@ -1,0 +1,59 @@
+{
+  "project": "22i-1714_A2_Ops",
+  "time_utc": "2026-11-08T11:42:14.958421+00:00",
+  "local_ui_url": "http://127.0.0.1:8001",
+  "hosted_api_url": "https://two2i-1714-a2-ops.onrender.com",
+  "requests": [
+    {
+      "file": "real.jpg",
+      "result_page": "http://127.0.0.1:8001/result/07edcea5-eafe-4a10-be86-acd6770f986c",
+      "http_status": 200,
+      "response": {
+        "ai_probability": 0.4017674922943115,
+        "confidence": 0.5982325077056885,
+        "created_at": "2026-11-08T11:42:22.353860+00:00",
+        "duration_ms": 1052.113387035206,
+        "error": null,
+        "filename": "real.jpg",
+        "id": "07edcea5-eafe-4a10-be86-acd6770f986c",
+        "image_sha256": "c980d6352ce5ce2aabee678eaa1b34cedb596040abce2829d9c715ed0ad9504c",
+        "label": "real",
+        "model_name": "22i-1714_A2_Ops",
+        "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93",
+        "model_version": "2",
+        "status": "success",
+        "threshold": 0.5626477003097534
+      }
+    },
+    {
+      "file": "ai_generated.jpg",
+      "result_page": "http://127.0.0.1:8001/result/dec56dd5-5cf5-4a1d-85e7-b022aae06426",
+      "http_status": 200,
+      "response": {
+        "ai_probability": 0.6457565426826477,
+        "confidence": 0.6457565426826477,
+        "created_at": "2026-11-08T11:42:24.756025+00:00",
+        "duration_ms": 959.2489069327712,
+        "error": null,
+        "filename": "ai_generated.jpg",
+        "id": "dec56dd5-5cf5-4a1d-85e7-b022aae06426",
+        "image_sha256": "d2b202673f34f7b9a7ec3bb9de664d1f39548219a98683b53505ecddc6022725",
+        "label": "ai_generated",
+        "model_name": "22i-1714_A2_Ops",
+        "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93",
+        "model_version": "2",
+        "status": "success",
+        "threshold": 0.5626477003097534
+      }
+    }
+  ],
+  "local_server_pid": 33348,
+  "health": {
+    "mode": "remote",
+    "project": "22i-1714_A2_Ops",
+    "status": "healthy",
+    "upstream": "healthy"
+  },
+  "status": "passed",
+  "history_verified": true
+}

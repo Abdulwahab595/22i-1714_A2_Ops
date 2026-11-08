@@ -27,6 +27,7 @@ artifacts/tuner/
 artifacts/tuner_corrected/
 artifacts/local-mlflow/
 artifacts/toy-tuner/
+artifacts/github/
 artifacts/evaluation/
 *.log
 .DS_Store

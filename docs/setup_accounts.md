@@ -14,7 +14,7 @@ Student: Abdul Wahab, roll number 22i-1714.
    Do not select a paid plan by accident. The supplied `render.yaml` describes the deployment.
 5. Sign in to Neon using GitHub and create a free PostgreSQL project. Use `22i-1714_A2_Ops` as its
    display name. Copy the connection string into the Render `DATABASE_URL` secret, including
-   `sslmode=require`. The application accepts `postgresql://` and uses psycopg internally.
+   `sslmode=require`. The application accepts `postgresql://` and uses pg8000 internally with verified TLS.
 6. Configure the Render environment variables listed in `render.yaml`. The champion run ID is
    produced by model registration. The server downloads that exact model once before startup,
    validates its SHA-256, then loads it locally. It does not contact DagsHub during predictions.

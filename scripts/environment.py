@@ -1,12 +1,14 @@
 """Record genuine environment versions and TensorFlow GPU visibility."""
 import importlib.metadata
 import json
+import os
 import platform
 import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 import tensorflow as tf
 
 packages = ["tensorflow", "tensorflow-cpu", "keras", "numpy", "pandas", "Pillow", "mlflow",

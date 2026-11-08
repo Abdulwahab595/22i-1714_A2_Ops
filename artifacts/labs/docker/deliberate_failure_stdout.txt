@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/local/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/app/scripts/fetch_champion.py", line 33, in <module>
+    main()
+  File "/app/scripts/fetch_champion.py", line 15, in main
+    raise RuntimeError(f"Champion model missing at {model_path}. Mount it, or set "
+RuntimeError: Champion model missing at /app/models/intentionally_missing.keras. Mount it, or set CHAMPION_RUN_ID and MLflow credentials
+

@@ -1,0 +1,31 @@
+{
+  "repo": {
+    "status": 200,
+    "content_type": "application/json; charset=UTF-8",
+    "location": null,
+    "info": {
+      "name": "22i-1714_A2_Ops",
+      "private": false,
+      "mirror": true,
+      "empty": true,
+      "default_branch": "main",
+      "clone_url": "https://github.com/Abdulwahab595/22i-1714_A2_Ops.git",
+      "original_url": null,
+      "html_url": "https://dagshub.com/Abdulwahab595/22i-1714_A2_Ops"
+    }
+  },
+  "branches": {
+    "status": 200,
+    "content_type": "application/json; charset=UTF-8",
+    "location": null,
+    "names": [
+      "lab-dvc",
+      "main"
+    ]
+  },
+  "mlflow_ui": {
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "location": null
+  }
+}

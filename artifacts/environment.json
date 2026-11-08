@@ -2,7 +2,7 @@
   "project": "22i-1714_A2_Ops",
   "student": "Abdul Wahab",
   "roll_number": "22i-1714",
-  "recorded_at_utc": "2026-11-07T23:28:56.021658+00:00",
+  "recorded_at_utc": "2026-11-08T12:24:18.098440+00:00",
   "python": "3.10.0 (tags/v3.10.0:b494f59, Oct  4 2021, 19:00:18) [MSC v.1929 64 bit (AMD64)]",
   "executable": "C:\\Users\\abdul\\Documents\\Codex\\work\\vg310\\Scripts\\python.exe",
   "platform": "Windows-10-10.0.26200-SP0",
@@ -16,6 +16,7 @@
     "Flask": "3.1.2",
     "SQLAlchemy": "2.0.43",
     "psycopg": "3.2.10",
+    "pg8000": "1.31.5",
     "keras-tuner": "1.4.7",
     "dvc": "3.67.1",
     "scikit-learn": "1.6.1"

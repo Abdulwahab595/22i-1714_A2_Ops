@@ -1,0 +1,23 @@
+[
+  {
+    "case": "wrong_type",
+    "http_status": 415,
+    "source_url": "https://two2i-1714-a2-ops.onrender.com/",
+    "recorded_at_utc": "2026-11-08T12:23:35.567635+00:00",
+    "capture_method": "Exact saved HTML response, replayed for a screenshot with its original stylesheet"
+  },
+  {
+    "case": "undecodable",
+    "http_status": 400,
+    "source_url": "https://two2i-1714-a2-ops.onrender.com/",
+    "recorded_at_utc": "2026-11-08T12:23:36.036452+00:00",
+    "capture_method": "Exact saved HTML response, replayed for a screenshot with its original stylesheet"
+  },
+  {
+    "case": "oversize",
+    "http_status": 413,
+    "source_url": "https://two2i-1714-a2-ops.onrender.com/",
+    "recorded_at_utc": "2026-11-08T12:23:38.370309+00:00",
+    "capture_method": "Exact saved HTML response, replayed for a screenshot with its original stylesheet"
+  }
+]

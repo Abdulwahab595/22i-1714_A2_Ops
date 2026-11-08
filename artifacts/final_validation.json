@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-11-08T12:40:52.636308+00:00",
+  "ruff": {
+    "command": "python -m ruff check app.py serve.py src scripts tests",
+    "exit_code": 0,
+    "output": "All checks passed!"
+  },
+  "pytest": {
+    "command": "python -m pytest -q",
+    "exit_code": 0,
+    "passed": 19,
+    "warnings": 14,
+    "duration_seconds": 21.48
+  },
+  "note": "Summary of actual final local tool execution; evaluation was not repeated."
+}
