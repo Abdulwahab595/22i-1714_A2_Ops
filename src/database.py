@@ -35,8 +35,11 @@ class PredictionStore:
         kwargs = {"pool_pre_ping": True}
         if url.startswith("sqlite:"):
             kwargs["connect_args"] = {"check_same_thread": False}
+        elif url.startswith("postgresql"):
+            kwargs["connect_args"] = {"connect_timeout": 10}
         self.engine = create_engine(url, **kwargs)
         metadata.create_all(self.engine)
+        print("Startup 3/4: prediction database ready", flush=True)
 
     def write(self, record):
         with self.engine.begin() as connection:

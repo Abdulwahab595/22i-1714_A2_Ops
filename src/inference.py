@@ -30,7 +30,9 @@ class InferenceEngine:
         if not 0 <= self.threshold <= 1:
             raise ValueError("DECISION_THRESHOLD must be between zero and one")
         self.image_size = int(self.metadata["image_size"])
+        print("Startup: TensorFlow imported; loading verified Keras model", flush=True)
         self.model = keras.models.load_model(model_path, compile=False)
+        print("Startup: Keras model loaded once", flush=True)
         self._lock = threading.Lock()
         self.loads = 1
 
