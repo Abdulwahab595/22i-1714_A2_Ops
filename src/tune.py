@@ -54,9 +54,9 @@ def main():
 
     class TrackedSearch(kt.RandomSearch):
         def run_trial(self, trial, *fit_args, **fit_kwargs):
-            output = Path("artifacts/runs") / f"07_tuner_{trial.trial_id}"
+            output = Path("artifacts/runs") / f"11_corrected_tuner_{trial.trial_id}"
             output.mkdir(parents=True, exist_ok=True)
-            with mlflow.start_run(run_name=f"07_tuner_{trial.trial_id}") as run:
+            with mlflow.start_run(run_name=f"11_corrected_tuner_{trial.trial_id}") as run:
                 mlflow.set_tags({**lineage(), "logging_approach": "manual", "tool": "KerasTuner",
                                  "test_set_used": "false"})
                 mlflow.log_params({**trial.hyperparameters.values, "image_size": 128,
@@ -72,7 +72,7 @@ def main():
                 dump_json(output / "history.json", history)
                 best_epoch = plot_curves(history, output)
                 describe_model(model, output)
-                result = {"name": f"07_tuner_{trial.trial_id}", "architecture": "mobilenet_v2",
+                result = {"name": f"11_corrected_tuner_{trial.trial_id}", "architecture": "mobilenet_v2",
                           "stage": "tuner_fine_tune", "logging": "manual",
                           **trial.hyperparameters.values, "run_id": run.info.run_id,
                           "checkpoint": str(output / "best.keras"), "image_size": 128,
@@ -86,14 +86,14 @@ def main():
                 return histories
 
     tuner = TrackedSearch(builder, objective="val_loss", max_trials=args.trials, seed=42,
-                          directory="artifacts/tuner", project_name="22i-1714_A2_Ops",
+                          directory="artifacts/tuner_corrected", project_name="22i-1714_A2_Ops",
                           overwrite=False)
     tuner.search(train_data, validation_data=val_data, epochs=args.epochs, verbose=2)
     rows = []
     for trial in tuner.oracle.trials.values():
         rows.append({"trial_id": trial.trial_id, **trial.hyperparameters.values,
                      "best_val_loss": trial.score, "status": trial.status})
-    output = Path("artifacts/tuner")
+    output = Path("artifacts/tuner_corrected")
     pd.DataFrame(rows).to_csv(output / "trial_results.csv", index=False)
     dump_json(output / "best_hyperparameters.json", tuner.get_best_hyperparameters(1)[0].values)
     print(json.dumps(rows, indent=2))

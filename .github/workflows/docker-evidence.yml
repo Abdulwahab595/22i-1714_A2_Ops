@@ -5,7 +5,7 @@ permissions:
   contents: read
 jobs:
   docker-lab:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 35
     env:
       MLFLOW_TRACKING_URI: ${{ secrets.DAGSHUB_TRACKING_URI }}

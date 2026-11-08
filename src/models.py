@@ -57,7 +57,9 @@ def compile_model(model, lr):
 
 
 def unfreeze(model, lr=1e-5, last_layers=None):
-    backbone = next(layer for layer in model.layers if isinstance(layer, keras.Model))
+    # Augmentation is also a Keras Model and appears before the feature extractor.
+    backbone = next(layer for layer in model.layers if isinstance(layer, keras.Model)
+                    and any(sub.name.startswith("block_16_") for sub in layer.layers))
     backbone.trainable = True
     candidates = backbone.layers[-last_layers:] if last_layers else [
         layer for layer in backbone.layers if layer.name.startswith("block_16_")
@@ -67,6 +69,9 @@ def unfreeze(model, lr=1e-5, last_layers=None):
     for layer in backbone.layers:
         layer.trainable = layer.name in selected and not isinstance(
             layer, keras.layers.BatchNormalization)
+    if not any(layer.trainable_weights for layer in backbone.layers
+               if isinstance(layer, keras.layers.Conv2D)):
+        raise ValueError("Fine-tuning did not select any backbone convolution weights")
     compile_model(model, lr)
     return model
 

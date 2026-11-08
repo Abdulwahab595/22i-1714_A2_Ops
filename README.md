@@ -11,7 +11,9 @@ The model score is experimental and uncalibrated. It is not proof that an image 
 
 The champion is frozen ImageNet MobileNetV2, registered as version 2 with the `champion` alias in
 [DagsHub](https://dagshub.com/Abdulwahab595/22i-1714_A2_Ops). Fifteen real-data candidates were compared
-using validation data, including eight tuner trials. Fine-tuning did not improve the selection metric.
+using validation data, including eight tuner trials. A later audit found that the initial fine-tuning
+attempts selected the augmentation container. Corrected last-block runs and eight corrected tuner
+trials are recorded separately; the locked champion and its test evaluation are preserved.
 
 | Locked finalist | Test accuracy | Precision | Recall | F1 | ROC-AUC |
 |---|---:|---:|---:|---:|---:|

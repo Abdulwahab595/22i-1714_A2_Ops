@@ -49,8 +49,9 @@ def main():
         for name in ["metrics.json", "confusion_matrix.png", "roc_curve.png", "error_grid.png",
                      "misclassified.csv"]:
             shutil.copy2(Path("artifacts/evaluation") / family / name, target / name)
-    for source, target in [("artifacts/tuner/trial_results.csv", "tuner_trials.csv"),
-                           ("artifacts/tuner/best_hyperparameters.json", "best_hyperparameters.json"),
+    tuner_root = "artifacts/tuner_corrected" if Path("artifacts/tuner_corrected/trial_results.csv").exists() else "artifacts/tuner"
+    for source, target in [(tuner_root + "/trial_results.csv", "tuner_trials.csv"),
+                           (tuner_root + "/best_hyperparameters.json", "best_hyperparameters.json"),
                            ("artifacts/toy-tuner/results.csv", "toy_tuner_results.csv")]:
         shutil.copy2(source, root / target)
     samples = Path("docs/samples")

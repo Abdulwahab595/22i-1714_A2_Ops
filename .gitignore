@@ -24,6 +24,7 @@ models/*.h5
 models/*.tflite
 artifacts/runs/
 artifacts/tuner/
+artifacts/tuner_corrected/
 artifacts/local-mlflow/
 artifacts/toy-tuner/
 artifacts/evaluation/

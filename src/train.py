@@ -170,6 +170,12 @@ def main():
         {"name": "08_mobilenet_autolog_corrected", "architecture": "mobilenet_v2",
          "stage": "frozen", "lr": 3e-4, "dropout": 0.3, "augmentation": True,
          "logging": "autolog"},
+        {"name": "09_mobilenet_last_block_corrected_lr1e5", "architecture": "mobilenet_v2",
+         "stage": "fine_tune", "lr": 1e-5, "dropout": 0.3, "augmentation": True,
+         "logging": "manual"},
+        {"name": "10_mobilenet_last_block_corrected_lr3e5", "architecture": "mobilenet_v2",
+         "stage": "fine_tune", "lr": 3e-5, "dropout": 0.3, "augmentation": True,
+         "logging": "manual"},
     ]
     selected = {int(n) for n in args.only.split(",") if n} if args.only else set(range(1, 7))
     results = []

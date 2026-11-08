@@ -5,5 +5,8 @@
   "remote": "C:\\Users\\abdul\\Documents\\Codex\\2026-11-08\\visionguard-assignment-ai-vs-real-image-2\\work\\labs\\dvc-toy-remote",
   "rollback_verified": true,
   "restore_verified": true,
-  "restore_fetched_from_remote": true
+  "restore_fetched_from_remote": true,
+  "github_branch": "lab-dvc",
+  "dagshub_branch": "lab-dvc",
+  "publication": "GitHub branch mirrored by the connected DagsHub repository"
 }
