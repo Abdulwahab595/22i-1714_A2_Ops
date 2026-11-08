@@ -32,19 +32,23 @@ def main():
     mapping_file = Path("artifacts/mlflow_remote_mapping.json")
     mapping = json.loads(mapping_file.read_text()) if mapping_file.exists() else {}
     for original in source.search_runs([original_experiment.experiment_id], max_results=1000):
+        if original.info.status == "RUNNING":
+            print(f"Skipping active run {original.info.run_id}; publish it after completion.")
+            continue
         if original.info.run_id in mapping:
             continue
         existing = target.search_runs([experiment_id], filter_string=
             f"tags.original_local_run_id = '{original.info.run_id}'", max_results=1)
-        if existing:
+        if existing and existing[0].data.tags.get("sync_complete") == "true":
             remote = existing[0]
         else:
             tags = {key: value for key, value in original.data.tags.items()
                     if not key.startswith("mlflow.")}
             tags.update(original_local_run_id=original.info.run_id,
                          execution_location="local", publication="imported genuine local run")
-            remote = target.create_run(experiment_id, start_time=original.info.start_time,
-                                       tags=tags, run_name=original.data.tags.get("mlflow.runName"))
+            remote = existing[0] if existing else target.create_run(
+                experiment_id, start_time=original.info.start_time,
+                tags=tags, run_name=original.data.tags.get("mlflow.runName"))
             target.log_batch(remote.info.run_id,
                              params=[Param(k, str(v)) for k, v in original.data.params.items()],
                              tags=[RunTag("source_tracking_store", args.source)])
@@ -56,6 +60,7 @@ def main():
             with tempfile.TemporaryDirectory(dir="artifacts") as temporary:
                 artifacts = source.download_artifacts(original.info.run_id, "", temporary)
                 target.log_artifacts(remote.info.run_id, artifacts)
+            target.set_tag(remote.info.run_id, "sync_complete", "true")
             target.set_terminated(remote.info.run_id, original.info.status,
                                    end_time=original.info.end_time)
         mapping[original.info.run_id] = remote.info.run_id

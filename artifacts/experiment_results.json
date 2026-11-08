@@ -1,0 +1,39 @@
+[
+  {
+    "name": "08_mobilenet_autolog_corrected",
+    "architecture": "mobilenet_v2",
+    "stage": "frozen",
+    "lr": 0.0003,
+    "dropout": 0.3,
+    "augmentation": true,
+    "logging": "autolog",
+    "run_id": "bc156a23f0af4bb2aaacbed1f618313f",
+    "checkpoint": "artifacts\\runs\\08_mobilenet_autolog_corrected\\best.keras",
+    "best_epoch": 10,
+    "epochs_completed": 10,
+    "training_seconds": 140.51599999999962,
+    "threshold_policy": {
+      "weighted_error": 0.3698630136986301,
+      "real_called_ai": 7,
+      "ai_called_real": 40,
+      "true_positive": 41,
+      "true_negative": 58
+    },
+    "validation": {
+      "accuracy": 0.678082191780822,
+      "precision": 0.8541666666666666,
+      "recall": 0.5061728395061729,
+      "f1": 0.6356589147286822,
+      "roc_auc": 0.782716049382716,
+      "threshold": 0.6540243029594421,
+      "tn": 58,
+      "fp": 7,
+      "fn": 40,
+      "tp": 41,
+      "samples": 146,
+      "weighted_error": 0.3698630136986301
+    },
+    "image_size": 128,
+    "seed": 42
+  }
+]

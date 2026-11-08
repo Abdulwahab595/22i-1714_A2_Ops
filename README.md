@@ -7,6 +7,21 @@ with MLflow/DagsHub tracking, DVC, Flask, PostgreSQL, Docker Compose, and a host
 
 The model score is experimental and uncalibrated. It is not proof that an image is real or generated.
 
+## Recorded results
+
+The champion is frozen ImageNet MobileNetV2, registered as version 2 with the `champion` alias in
+[DagsHub](https://dagshub.com/Abdulwahab595/22i-1714_A2_Ops). Fifteen real-data candidates were compared
+using validation data, including eight tuner trials. Fine-tuning did not improve the selection metric.
+
+| Locked finalist | Test accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|---:|---:|---:|---:|---:|
+| Scratch CNN | 0.5782 | 0.7209 | 0.3827 | 0.5000 | 0.6487 |
+| MobileNetV2 champion | 0.7279 | 0.7971 | 0.6790 | 0.7333 | 0.8449 |
+
+AI-generated is the positive class. The champion threshold, 0.5626477, was selected on validation data
+with real-called-AI errors weighted twice as heavily. The test set contains 147 images and was scored
+once per locked finalist. See [result tables and figures](docs/results) and [sample provenance](docs/samples).
+
 ## Setup
 
 See [account setup](docs/setup_accounts.md). Copy `.env.example` to `.env` and fill in your own secrets.
@@ -46,7 +61,8 @@ timestamps and explicitly identifies the local execution; it does not claim the 
 
 ## Run the application
 
-After exporting `models/champion.keras` and `models/champion.json`:
+After setting the pinned `CHAMPION_RUN_ID` and tracking credentials in `.env`, download the released
+model once with `python -m scripts.fetch_champion`. Alternatively, use the locally exported model.
 
 ```powershell
 python app.py
@@ -60,6 +76,7 @@ docker compose ps
 Open http://127.0.0.1:8000. `/health` checks the loaded model and database. The UI provides upload,
 result and history pages; the API provides `POST /api/predict` with an `image` multipart field,
 `GET /api/history`, and `GET /api/predictions/<id>`. If `API_KEY` is set, send `Authorization: Bearer ...`.
+Uploads are limited to JPEG/PNG, 5 MB, and two million pixels to bound serving memory.
 
 The Compose database is called `db`, has a health check and a named volume, and publishes no host port.
 The application starts after PostgreSQL is ready. The model is mounted read-only into the web container.

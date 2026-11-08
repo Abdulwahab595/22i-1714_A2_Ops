@@ -168,3 +168,12 @@ outs:
   hash: md5
   path: images.csv
 
+
+Remote-fetch verification 2026-11-08T00:25:32.298027+00:00
+Removed only images.csv and its current toy cache object 569b4dbcf151b87a4a7342bc7e2c76b9.
+Remote backup hash verified before removal.
+> python -m dvc pull
+A       images.csv
+1 file fetched and 1 file added
+
+Restored bytes match the original SHA-256.

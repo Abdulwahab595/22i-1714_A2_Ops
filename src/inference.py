@@ -35,8 +35,9 @@ class InferenceEngine:
         self.loads = 1
 
     def predict(self, content):
-        batch = preprocess_bytes(content, self.image_size)
         with self._lock:
+            # Bound concurrent decoder/resize memory as well as model execution.
+            batch = preprocess_bytes(content, self.image_size)
             probability = float(self.model(batch, training=False).numpy().reshape(-1)[0])
         is_ai = probability >= self.threshold
         return {"label": "ai_generated" if is_ai else "real",

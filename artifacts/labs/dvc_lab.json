@@ -4,5 +4,6 @@
   "version_2_commit": "7d943d071828d7da50b752804682f8ad811e071d",
   "remote": "C:\\Users\\abdul\\Documents\\Codex\\2026-11-08\\visionguard-assignment-ai-vs-real-image-2\\work\\labs\\dvc-toy-remote",
   "rollback_verified": true,
-  "restore_verified": true
+  "restore_verified": true,
+  "restore_fetched_from_remote": true
 }

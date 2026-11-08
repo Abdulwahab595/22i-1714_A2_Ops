@@ -58,7 +58,8 @@ def main():
         print("Final test evaluation already exists; it will not be repeated.")
         return
     results = [json.loads(path.read_text()) for path in Path("artifacts/runs").glob("*/result.json")]
-    if len(results) < 14:
+    if (len([r for r in results if r.get("stage") == "tuner_fine_tune"]) < 8
+            or len([r for r in results if r["name"].startswith(tuple(f"{n:02}_" for n in range(1, 7)))]) < 6):
         raise ValueError("Complete six controlled runs and at least eight tuner trials first")
     comparison = [{"name": r["name"], "architecture": r["architecture"],
                     "stage": r["stage"], "best_epoch": r["best_epoch"],

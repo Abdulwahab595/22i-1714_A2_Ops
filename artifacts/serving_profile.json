@@ -1,0 +1,18 @@
+{
+  "model": "03_mobilenet_frozen_lr001",
+  "loaded_rss_MiB": 409.58203125,
+  "after_inference_rss_MiB": 432.1875,
+  "peak_rss_MiB": 441.62109375,
+  "inference_seconds": 0.375,
+  "sample_split": "validation",
+  "prediction": {
+    "label": "ai_generated",
+    "confidence": 0.8501454591751099,
+    "ai_probability": 0.8501454591751099,
+    "threshold": 0.5626477003097534,
+    "model_name": "22i-1714_A2_Ops",
+    "model_version": "memory-profile-only",
+    "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93"
+  },
+  "note": "Windows profile; Linux container memory must be verified separately."
+}

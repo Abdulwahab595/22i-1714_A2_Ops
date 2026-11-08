@@ -3,6 +3,8 @@ import argparse
 import getpass
 import json
 import os
+import re
+import stat
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -69,14 +71,25 @@ def main():
     run(*dvc, "checkout")
     # This is a single known toy file, never a recursive delete or user dataset deletion.
     csv.unlink()
-    record("Deleted the toy working CSV only; restoring with dvc pull.")
+    record("Deleted the toy working CSV; removing its one disposable cache object to prove remote fetch.")
+    cache_root = Path(run(*dvc, "cache", "dir")).resolve()
+    pointer = (directory / "images.csv.dvc").read_text()
+    digest = re.search(r"md5:\s*([a-f0-9]{32})", pointer).group(1)
+    cache_file = (cache_root / "files/md5" / digest[:2] / digest[2:]).resolve()
+    remote_file = remote / "files/md5" / digest[:2] / digest[2:]
+    if cache_root not in cache_file.parents or not remote_file.is_file():
+        raise RuntimeError("Toy remote backup or safe cache path verification failed")
+    if cache_file.exists():
+        cache_file.chmod(cache_file.stat().st_mode | stat.S_IWRITE)
+        cache_file.unlink()
     run(*dvc, "pull")
     assert "example_3.jpg" in csv.read_text()
     record("Verified version 2 restored:\n" + csv.read_text())
     record("Pointer file:\n" + (directory / "images.csv.dvc").read_text())
     Path("artifacts/labs/dvc_lab.json").write_text(json.dumps({
         "directory": str(directory), "version_1_commit": first, "version_2_commit": second,
-        "remote": str(remote), "rollback_verified": True, "restore_verified": True}, indent=2))
+        "remote": str(remote), "rollback_verified": True, "restore_verified": True,
+        "restore_fetched_from_remote": True}, indent=2))
     log.close()
 
 

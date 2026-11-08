@@ -1,4 +1,7 @@
 [core]
-    remote = local
+    remote = dagshub
 ['remote "local"']
     url = C:\Users\abdul\Documents\Codex\work\dvc-dataset-remote
+['remote "dagshub"']
+    url = s3://dvc
+    endpointurl = https://dagshub.com/Abdulwahab595/22i-1714_A2_Ops.s3

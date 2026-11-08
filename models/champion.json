@@ -1,0 +1,30 @@
+{
+  "project": "22i-1714_A2_Ops",
+  "registered_model_name": "22i-1714_A2_Ops",
+  "model_version": "2",
+  "model_sha256": "2d62ed7bb2b8b59d61674fb961446e4abad4859dbc60073c6e4c6f81f734fb93",
+  "run_id": "c4e72dc4bd6d4c55a0251130f44a5ea8",
+  "architecture": "mobilenet_v2",
+  "image_size": 128,
+  "threshold": 0.5626477003097534,
+  "positive_class": "ai_generated",
+  "class_mapping": {
+    "0": "real",
+    "1": "ai_generated"
+  },
+  "preprocessing": "Pillow EXIF transpose, RGB, tf.image.resize_with_pad bilinear antialias",
+  "normalization": "Included inside the saved Keras model",
+  "threshold_policy": "Validation only: minimize (2*FP + FN)/N; AI is positive",
+  "selection_basis": "Validation ROC-AUC, weighted-error and F1 tie-breaks",
+  "lineage": {
+    "project": "22i-1714_A2_Ops",
+    "git_commit": "15266d7d34d80487a2dbdd3d5803bff70033401e",
+    "dvc_data_version": "f38c9a935857ae8ef965dbe410f00a3949814f1a126ac8cb93e4eb8e5c96a109",
+    "git_dirty": "true",
+    "data_version_kind": "dvc_pointer_sha256",
+    "seed": "42",
+    "positive_class": "ai_generated"
+  },
+  "confidence_calibrated": false,
+  "registry_model_uri": "models:/22i-1714_A2_Ops@champion"
+}

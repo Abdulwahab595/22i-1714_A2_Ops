@@ -26,5 +26,7 @@ artifacts/runs/
 artifacts/tuner/
 artifacts/local-mlflow/
 artifacts/toy-tuner/
+artifacts/evaluation/
 *.log
 .DS_Store
+docs/samples/oversized.png

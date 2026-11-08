@@ -5,6 +5,7 @@ services:
       assignment.project: 22i-1714_A2_Ops
     build: .
     image: 22i-1714_a2_ops:web
+    mem_limit: 512m
     ports:
       - "127.0.0.1:8000:8000"
     environment:
@@ -16,6 +17,7 @@ services:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-visionguard}
       API_KEY: ${API_KEY:-}
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
+      MAX_IMAGE_PIXELS: ${MAX_IMAGE_PIXELS:-2000000}
       DECISION_THRESHOLD: ${DECISION_THRESHOLD:-}
     volumes:
       - ./models:/app/models:ro

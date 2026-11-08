@@ -35,9 +35,15 @@ def main():
     train_data = make_dataset(train, "data/raw", training=True,
                                cache_dir="data/processed/tf128/train")
     val_data = make_dataset(val, "data/raw", cache_dir="data/processed/tf128/validation")
-    parent = "artifacts/runs/04_mobilenet_frozen_lr0003/best.keras"
-    if not Path(parent).exists():
-        raise FileNotFoundError("Run experiment 04 before tuning")
+    candidates = [json.loads(path.read_text())
+                  for path in Path("artifacts/runs").glob("*/result.json")]
+    candidates = [r for r in candidates if r.get("stage") == "frozen"
+                  and r.get("architecture") == "mobilenet_v2"]
+    if not candidates:
+        raise FileNotFoundError("Complete a frozen-backbone experiment before tuning")
+    parent_result = max(candidates, key=lambda r: r["validation"]["roc_auc"])
+    parent = parent_result["checkpoint"]
+    print(f"Fixed tuner parent selected on validation ROC-AUC: {parent_result['name']}", flush=True)
 
     def builder(hp):
         set_seed(42)

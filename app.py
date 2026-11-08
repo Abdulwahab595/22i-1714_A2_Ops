@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, abort, jsonify, redirect, render_template, request, url_for
+from flask import Flask, Request, abort, jsonify, redirect, render_template, request, url_for
 from PIL import Image, UnidentifiedImageError
 from werkzeug.exceptions import RequestEntityTooLarge
 from werkzeug.utils import secure_filename
@@ -22,6 +22,14 @@ from src.database import PredictionStore
 CAVEAT = ("This is an experimental model score, not proof of authenticity. "
           "Edited photos, artwork, compression, and unfamiliar generators can cause errors. "
           "The score has not been calibrated as a probability of correctness.")
+
+
+class MemoryOnlyRequest(Request):
+    def _get_file_stream(self, total_content_length, content_type, filename=None,
+                         content_length=None):
+        # Werkzeug normally spools larger uploads to a temporary disk file.
+        # The global request-size bound makes a memory-only stream safe here.
+        return io.BytesIO()
 
 
 class UploadError(ValueError):
@@ -68,6 +76,7 @@ def validate_upload(upload, max_bytes, max_pixels):
 def create_app(config=None, engine=None, store=None):
     load_dotenv()
     app = Flask(__name__)
+    app.request_class = MemoryOnlyRequest
     app.config.update(
         APP_MODE=os.getenv("APP_MODE", "local"),
         MODEL_PATH=os.getenv("MODEL_PATH", "models/champion.keras"),
@@ -78,7 +87,7 @@ def create_app(config=None, engine=None, store=None):
         MODEL_API_TOKEN=os.getenv("MODEL_API_TOKEN", ""), API_KEY=os.getenv("API_KEY", ""),
         API_TIMEOUT_SECONDS=float(os.getenv("API_TIMEOUT_SECONDS", "120")),
         MAX_UPLOAD_BYTES=int(float(os.getenv("MAX_UPLOAD_MB", "5")) * 1024**2),
-        MAX_IMAGE_PIXELS=int(os.getenv("MAX_IMAGE_PIXELS", "25000000")),
+        MAX_IMAGE_PIXELS=int(os.getenv("MAX_IMAGE_PIXELS", "2000000")),
         JSON_SORT_KEYS=False,
     )
     if config:

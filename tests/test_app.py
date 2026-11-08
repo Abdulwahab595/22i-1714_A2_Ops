@@ -76,13 +76,20 @@ def test_oversize_upload_is_friendly(configured):
     assert store.history()[0]["status"] == "rejected"
 
 
-def test_model_is_reused_and_health_checks_database(configured):
-    app, _, _ = configured
+def test_model_is_reused_and_health_checks_database(tmp_path, monkeypatch):
+    class CountingEngine(FixedEngine):
+        constructions = 0
+        def __init__(self, *_args):
+            type(self).constructions += 1
+    monkeypatch.setattr("src.inference.InferenceEngine", CountingEngine)
+    store = PredictionStore(f"sqlite:///{(tmp_path / 'reuse.db').as_posix()}")
+    app = create_app({"TESTING": True, "APP_MODE": "local", "API_KEY": ""}, store=store)
     client = app.test_client()
     for _ in range(2):
         assert client.post("/api/predict", data={"image": (io.BytesIO(image_bytes()),
                                                             "example.png")}).status_code == 200
     assert client.get("/health").get_json()["model_loads"] == 1
+    assert CountingEngine.constructions == 1
 
 
 def test_api_authentication(configured):
@@ -109,3 +116,20 @@ def test_remote_mode_starts_without_a_local_model():
                        "MODEL_API_URL": "https://example.invalid"})
     assert app.extensions["inference_engine"] is None
     assert app.test_client().get("/").status_code == 200
+
+
+def test_large_valid_upload_never_spools_to_temporary_disk(tmp_path, monkeypatch):
+    import tempfile
+    def forbid_disk_spool(*_args, **_kwargs):
+        raise AssertionError("Uploaded image attempted to spill to a temporary disk file")
+    monkeypatch.setattr(tempfile, "TemporaryFile", forbid_disk_spool)
+    image = io.BytesIO()
+    Image.effect_noise((1000, 1000), 100).convert("RGB").save(image, "PNG")
+    assert len(image.getvalue()) > 512 * 1024
+    store = PredictionStore(f"sqlite:///{(tmp_path / 'large.db').as_posix()}")
+    app = create_app({"TESTING": True, "APP_MODE": "local", "API_KEY": "",
+                       "MAX_UPLOAD_BYTES": 5 * 1024**2}, engine=FixedEngine(), store=store)
+    response = app.test_client().post("/api/predict",
+                                     data={"image": (io.BytesIO(image.getvalue()), "large.png")})
+    assert response.status_code == 200
+    assert store.history()[0]["status"] == "success"

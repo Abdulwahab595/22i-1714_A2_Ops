@@ -1,0 +1,8 @@
+{
+  "versions": {
+    "01_cnn_no_augmentation": "1",
+    "03_mobilenet_frozen_lr001": "2"
+  },
+  "champion_version": "2",
+  "champion_run_id": "c4e72dc4bd6d4c55a0251130f44a5ea8"
+}

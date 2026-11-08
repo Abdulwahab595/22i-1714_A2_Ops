@@ -3,6 +3,7 @@ import argparse
 import contextlib
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -10,6 +11,8 @@ os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
 os.environ.setdefault("TF_NUM_INTRAOP_THREADS", "6")
 os.environ.setdefault("TF_NUM_INTEROP_THREADS", "2")
 os.environ.setdefault("KERAS_HOME", str(Path(".keras-cache").resolve()))
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 import matplotlib
 matplotlib.use("Agg")
@@ -41,7 +44,7 @@ def callbacks(output, logging="manual", patience=3):
 
 
 def describe_model(model, output):
-    with (output / "model_summary.txt").open("w") as file, contextlib.redirect_stdout(file):
+    with (output / "model_summary.txt").open("w", encoding="utf-8") as file, contextlib.redirect_stdout(file):
         model.summary(expand_nested=True)
     layers = []
     for layer in model.layers:
@@ -92,7 +95,7 @@ def fit_experiment(config, train_data, val_data, val_frame, epochs, image_size, 
     with mlflow.start_run(run_name=config["name"]) as run:
         mlflow.set_tags({**lineage(seed), "logging_approach": config["logging"],
                          "stage": config["stage"], "test_set_used": "false"})
-        mlflow.log_params({**config, "image_size": image_size, "batch_size": 32,
+        mlflow.log_params({**config, "image_size": image_size, "pipeline_batch_size": 32,
                            "max_epochs": epochs, "seed": seed,
                            "resize": "bilinear_resize_with_pad", "loss": "binary_crossentropy",
                            "optimizer": "Adam"})
@@ -164,6 +167,9 @@ def main():
         {"name": "06_mobilenet_last_block_lr3e5", "architecture": "mobilenet_v2",
          "stage": "fine_tune", "lr": 3e-5, "dropout": 0.3, "augmentation": True,
          "logging": "manual"},
+        {"name": "08_mobilenet_autolog_corrected", "architecture": "mobilenet_v2",
+         "stage": "frozen", "lr": 3e-4, "dropout": 0.3, "augmentation": True,
+         "logging": "autolog"},
     ]
     selected = {int(n) for n in args.only.split(",") if n} if args.only else set(range(1, 7))
     results = []

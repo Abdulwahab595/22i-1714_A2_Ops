@@ -1,0 +1,16 @@
+[
+  {
+    "file": "real.jpg",
+    "original_path": "RealArt/RealArt/12-reasons-why-people-like-your-posts-on-social-media-001.jpg",
+    "label": "real",
+    "original_sha256": "c980d6352ce5ce2aabee678eaa1b34cedb596040abce2829d9c715ed0ad9504c",
+    "selection": "Correctly classified demonstration example; not an accuracy estimate"
+  },
+  {
+    "file": "ai_generated.jpg",
+    "original_path": "AiArtData/AiArtData/1000_F_563719058_JXnzcPV4GRpWqmF5sqnqmbJ7ow3ca3DS.jpg",
+    "label": "ai_generated",
+    "original_sha256": "d2b202673f34f7b9a7ec3bb9de664d1f39548219a98683b53505ecddc6022725",
+    "selection": "Correctly classified demonstration example; not an accuracy estimate"
+  }
+]

@@ -1,0 +1,320 @@
+{
+  "info": {
+    "name": "22i-1714_A2_Ops VisionGuard API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Real example",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "docs/samples/real.jpg"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const body = pm.response.json();",
+              "pm.test('Valid prediction contract', function () {",
+              "  pm.expect(['real', 'ai_generated']).to.include(body.label);",
+              "  pm.expect(body.confidence).to.be.within(0, 1);",
+              "  pm.expect(body.model_version).to.be.a('string');",
+              "  pm.expect(body.image_sha256).to.have.lengthOf(64);",
+              "  pm.expect(body.id).to.be.a('string');",
+              "});",
+              "pm.collectionVariables.set('last_prediction_id', body.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. AI-generated example",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "docs/samples/ai_generated.jpg"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const body = pm.response.json();",
+              "pm.test('Valid prediction contract', function () {",
+              "  pm.expect(['real', 'ai_generated']).to.include(body.label);",
+              "  pm.expect(body.confidence).to.be.within(0, 1);",
+              "  pm.expect(body.model_version).to.be.a('string');",
+              "  pm.expect(body.image_sha256).to.have.lengthOf(64);",
+              "  pm.expect(body.id).to.be.a('string');",
+              "});",
+              "pm.collectionVariables.set('last_prediction_id', body.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Database history",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/history",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "history"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });",
+              "const rows = pm.response.json().predictions;",
+              "pm.test('Prediction was persisted', function () {",
+              " pm.expect(rows.map(x => x.id)).to.include(pm.collectionVariables.get('last_prediction_id'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Reject unsupported type",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "docs/samples/wrong_type.txt"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 415', function () { pm.response.to.have.status(415); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Reject undecodable image",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "docs/samples/undecodable.png"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 400', function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Reject oversized upload",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{api_key}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "docs/samples/oversized.png"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 413', function () { pm.response.to.have.status(413); });"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
