@@ -14,7 +14,7 @@ from src.database import PredictionStore
 if __name__ == "__main__":
     load_dotenv()
     uri = os.getenv("DATABASE_URL", "")
-    if not uri.startswith(("postgresql://", "postgresql+psycopg://", "postgres://")):
+    if not uri.startswith(("postgresql://", "postgresql+psycopg://", "postgresql+pg8000://", "postgres://")):
         print("DATABASE_URL must contain the connection URL beginning with postgresql://")
         sys.exit(1)
     try:

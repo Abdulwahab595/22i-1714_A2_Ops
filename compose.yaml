@@ -14,7 +14,7 @@ services:
       PORT: "8000"
       MODEL_PATH: /app/models/champion.keras
       MODEL_METADATA_PATH: /app/models/champion.json
-      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-visionguard}
+      DATABASE_URL: postgresql+pg8000://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-visionguard}
       API_KEY: ${API_KEY:-}
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
       MAX_IMAGE_PIXELS: ${MAX_IMAGE_PIXELS:-2000000}

@@ -79,6 +79,9 @@ Open http://127.0.0.1:8000. `/health` checks the loaded model and database. The 
 result and history pages; the API provides `POST /api/predict` with an `image` multipart field,
 `GET /api/history`, and `GET /api/predictions/<id>`. If `API_KEY` is set, send `Authorization: Bearer ...`.
 Uploads are limited to JPEG/PNG, 5 MB, and two million pixels to bound serving memory.
+PostgreSQL uses the pure-Python pg8000 driver. Neon connections use certificate-verified TLS;
+existing PostgreSQL URLs are normalized internally. This avoids the native psycopg connection
+crash observed on Render after TensorFlow loaded. Database connection operations have a timeout.
 
 The Compose database is called `db`, has a health check and a named volume, and publishes no host port.
 The application starts after PostgreSQL is ready. The model is mounted read-only into the web container.

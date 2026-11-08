@@ -10,7 +10,7 @@ from pathlib import Path
 import tensorflow as tf
 
 packages = ["tensorflow", "tensorflow-cpu", "keras", "numpy", "pandas", "Pillow", "mlflow",
-            "Flask", "SQLAlchemy", "psycopg", "keras-tuner", "dvc", "scikit-learn"]
+            "Flask", "SQLAlchemy", "psycopg", "pg8000", "keras-tuner", "dvc", "scikit-learn"]
 versions = {}
 for name in packages:
     try:

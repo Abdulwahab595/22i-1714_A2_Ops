@@ -1,0 +1,15 @@
+{
+  "project": "22i-1714_A2_Ops",
+  "time_utc": "2026-11-08T11:13:18.242264+00:00",
+  "driver": "pg8000",
+  "model_then_database_startup": "passed",
+  "health": {
+    "database": "connected",
+    "mode": "local",
+    "model": "loaded",
+    "model_loads": 1,
+    "model_version": "2",
+    "project": "22i-1714_A2_Ops",
+    "status": "healthy"
+  }
+}

@@ -1,8 +1,10 @@
 """Persistent prediction trail; uploaded image contents are never stored."""
 from pathlib import Path
+import ssl
 
 from sqlalchemy import (Column, Float, MetaData, String, Table, create_engine,
                         desc, insert, select, text)
+from sqlalchemy.engine import make_url
 
 metadata = MetaData()
 predictions = Table(
@@ -24,19 +26,31 @@ predictions = Table(
 )
 
 
+def connection_settings(url):
+    if url.startswith("postgres://"):
+        url = url.replace("postgres://", "postgresql://", 1)
+    parsed = make_url(url)
+    kwargs = {"pool_pre_ping": True}
+    if parsed.get_backend_name() == "sqlite":
+        if parsed.database and parsed.database != ":memory:":
+            Path(parsed.database).parent.mkdir(parents=True, exist_ok=True)
+        kwargs["connect_args"] = {"check_same_thread": False}
+    elif parsed.get_backend_name() == "postgresql":
+        # pg8000 avoids the native libpq crash observed after TensorFlow loads on Render.
+        mode = parsed.query.get("sslmode", "prefer")
+        tls = mode in {"require", "verify-ca", "verify-full"} or (
+            parsed.host or "").endswith(".neon.tech")
+        parsed = parsed.set(drivername="postgresql+pg8000")
+        parsed = parsed.difference_update_query(["sslmode", "channel_binding", "connect_timeout"])
+        kwargs["connect_args"] = {"timeout": 10}
+        if tls:
+            kwargs["connect_args"]["ssl_context"] = ssl.create_default_context()
+    return parsed, kwargs
+
+
 class PredictionStore:
     def __init__(self, url):
-        if url.startswith("postgres://"):
-            url = url.replace("postgres://", "postgresql+psycopg://", 1)
-        elif url.startswith("postgresql://"):
-            url = url.replace("postgresql://", "postgresql+psycopg://", 1)
-        if url.startswith("sqlite:///") and url != "sqlite:///:memory:":
-            Path(url.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
-        kwargs = {"pool_pre_ping": True}
-        if url.startswith("sqlite:"):
-            kwargs["connect_args"] = {"check_same_thread": False}
-        elif url.startswith("postgresql"):
-            kwargs["connect_args"] = {"connect_timeout": 10}
+        url, kwargs = connection_settings(url)
         self.engine = create_engine(url, **kwargs)
         metadata.create_all(self.engine)
         print("Startup 3/4: prediction database ready", flush=True)
